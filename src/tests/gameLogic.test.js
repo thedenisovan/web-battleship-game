@@ -1,4 +1,4 @@
-import { Ship } from '../gameLogic.js'
+import { Ship, GameBoard } from '../gameLogic.js'
 
 describe('Testing ship hit behavior', () => {
   let destroyer;
@@ -12,5 +12,17 @@ describe('Testing ship hit behavior', () => {
   });
   test('Ship has been sunken.', () => {
     expect(destroyer.hit()).toBe('You did sunk the ship.');
+  });
+});
+
+describe('Testing game board behavior', () => {
+  let board;
+
+  beforeAll(() => {
+    board = new GameBoard();
+  });
+
+  test('Return correct board', () => {
+    expect(board.board[0][0]).toBe(null);
   })
 });
