@@ -1,28 +1,33 @@
-import { Ship, GameBoard } from '../gameLogic.js'
+import { Ship, GameBoard } from "../gameLogic.js";
 
-describe('Testing ship hit behavior', () => {
+describe("Testing ship hit behavior", () => {
   let destroyer;
 
   beforeAll(() => {
     destroyer = new Ship(2);
   });
 
-  test('Ship has been hit.', () => {
-    expect(destroyer.hit()).toBe('You did hit the ship.');
+  test("Ship has been hit.", () => {
+    expect(destroyer.hit()).toEqual(1);
   });
-  test('Ship has been sunken.', () => {
-    expect(destroyer.hit()).toBe('You did sunk the ship.');
+  test("Ship has been sunken.", () => {
+    expect(destroyer.hit()).toEqual(2);
   });
 });
 
-describe('Testing game board behavior', () => {
-  let board;
+describe("Testing game board behavior", () => {
+  let gameBoard;
 
   beforeAll(() => {
-    board = new GameBoard();
+    gameBoard = new GameBoard();
   });
 
-  test('Return correct board', () => {
-    expect(board.board[0][0]).toBe(null);
-  })
+  test("Place ship at given coordinates", () => {
+    gameBoard.placeShip(2, [[1], [1]]);
+    expect(gameBoard.board[1][1]).not.toBeNull();
+  });
+  test("Place ship at given coordinates", () => {
+    gameBoard.placeShip(5, [[1], [1]]);
+    expect(gameBoard.board[2][1]).not.toBeNull();
+  });
 });

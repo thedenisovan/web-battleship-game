@@ -5,13 +5,11 @@ export class Ship {
     this.isLive = true;
   }
   hit() {
-    this.hits++;
-    this.#isSunk();
-    if (!this.isLive) {
-      return 'You did sunk the ship.';
-    } else {
-      return 'You did hit the ship.'
+    if (this.isLive) {
+      this.hits++;
+      this.#isSunk();
     }
+    return this.hits;
   }
   // Helper function which sets ship to sunken
   #isSunk() {
@@ -24,6 +22,7 @@ export class Ship {
 export class GameBoard {
   constructor() {
     this.board = this.#generateBoard();
+    this.xAxy = false;
   }
   // Creates 2d game board
   #generateBoard() {
@@ -36,5 +35,20 @@ export class GameBoard {
       }
     }
     return board;
+  }
+
+  placeShip(length, start) {
+    let ship = new Ship(length);
+    let [x, y] = start;
+
+    if (this.xAxy) {
+      for (let i = y; i < length + 1; i++) {
+        this.board[x][i] = ship;
+      }
+    } else {
+      for (let i = x; i < length + 1; i++) {
+        this.board[i][y] = ship;
+      }
+    }
   }
 }
