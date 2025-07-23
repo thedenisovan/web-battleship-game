@@ -4,6 +4,7 @@ export class Ship {
     this.hits = 0;
     this.isLive = true;
   }
+  // Function to damage ship
   hit() {
     if (this.isLive) {
       this.hits++;
@@ -36,8 +37,14 @@ export class GameBoard {
     }
     return board;
   }
-
+  // Places ship in given coordinates on current axy
   placeShip(length, start) {
+    if (length > 5 || length < 2) {
+      throw new Error("Ship's size is out of bounds.");
+    } else if ((start[0] > 8 || start[0] < 0) || (start[1] > 8 || start[1] < 0)) {
+      throw new Error("Coordinate\s are out of bounds.");
+    }
+
     let ship = new Ship(length);
     let [x, y] = start;
 
