@@ -39,4 +39,20 @@ describe('Testing game board behavior', () => {
   test('Places a ship at the given coordinates when not empty', () => {
     expect(() => gameBoard.placeShip(3, [1, 7])).toThrow();
   });
+
+  test('Missed attack on ship', () => {
+    expect(gameBoard.receiveAttack(5, 5)).toBe('Missed.');
+  });
+  test('Ship has been hit', () => {
+    expect(gameBoard.receiveAttack(2, 7)).toBe('Hit.');
+  });
+  test('Ship has been hit', () => {
+    expect(gameBoard.receiveAttack(1, 7)).toBe('Hit.');
+  });
+  test('Ship has sunk', () => {
+    expect(gameBoard.receiveAttack(3, 7)).toBe('You sunk a ship.');
+  });
+  test('Ship removed from board', () => {
+    expect(gameBoard.board[2][7]).toBe('x');
+  });
 });
