@@ -87,12 +87,13 @@ export class GameBoard {
     )
       throw new Error('Wrong coordinate input.');
 
+    // If cell have been attacked before
     if (this.board[row][col] === 'o' || this.board[row][col] === 'x') {
       return null;
-    } else if (this.board[row][col] === null) {
+    } else if (this.board[row][col] === null) { // If cell attack has been missed
       this.board[row][col] = 'o';
       return 'Missed.';
-    } else {
+    } else { // If attack has been successful
       this.board[row][col].hit();
       this.board[row][col] = 'x';
       if (this.#checkForSunkSip()) return 'You sunk a ship.';
@@ -105,5 +106,11 @@ export class GameBoard {
     
     if (originalLength !== this.ships.length) return true;
     else return false;
+  }
+}
+
+export class Player {
+  constructor() {
+    this.gameBoard = new GameBoard;
   }
 }
