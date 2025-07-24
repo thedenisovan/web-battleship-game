@@ -21,41 +21,59 @@ export class Ship {
 }
 
 export class GameBoard {
+  #FIELD_LENGTH = 9;
   constructor() {
     this.board = this.#generateBoard();
-    this.xAxy = false;
   }
   // Creates 2d game board
   #generateBoard() {
-    const FIELD_LENGTH = 10;
     let board = [];
-    for (let i = 0; i < FIELD_LENGTH; i++) {
+    for (let i = 0; i <= this.#FIELD_LENGTH; i++) {
       board[i] = [];
-      for (let j = 0; j < FIELD_LENGTH; j++) {
+      for (let j = 0; j <= this.#FIELD_LENGTH; j++) {
         board[i][j] = null;
       }
     }
     return board;
   }
-  // Places ship in given coordinates on current axy
-  placeShip(length, start) {
-    if (length > 5 || length < 2) {
-      throw new Error("Ship's size is out of bounds.");
-    } else if ((start[0] > 8 || start[0] < 0) || (start[1] > 8 || start[1] < 0)) {
-      throw new Error("Coordinate\s are out of bounds.");
-    }
+  // Places ship in given coordinates on horizontal or vertical
+  placeShip(length, start, horizontal = true) {
+    let [row, col] = start;
+
+    this.#errorHandling(length, start, horizontal);
 
     let ship = new Ship(length);
-    let [x, y] = start;
 
-    if (this.xAxy) {
-      for (let i = y; i < length + 1; i++) {
-        this.board[x][i] = ship;
+    if (horizontal) {
+      for (let i = row; i < length + row; i++) {
+        this.board[i][col] = ship;
       }
     } else {
-      for (let i = x; i < length + 1; i++) {
-        this.board[i][y] = ship;
+      for (let i = col; i < length + col; i++) {
+        this.board[row][i] = ship;
       }
+    }
+  }
+  // Helper function to test ship size and ship's coordinates
+  #errorHandling(length, start, horizontal) {
+    let [row, col] = start;
+    let direction = horizontal ? row : col;
+
+    if (length > 5 || length < 2) {
+      throw new Error("Ship's size is out of bounds.");
+    } else if (
+      (horizontal && row + length > this.#FIELD_LENGTH)  ||
+      (!horizontal && col + length > this.#FIELD_LENGTH) ||
+      row < 0 ||
+      col < 0
+    ) {
+      throw new Error('Coordinate\s are out of boundaries.');
+    }
+    // Check if fields are available - both horizontal and vertical
+    for (let i = direction; i < direction + length; i++) {
+      if (this.board[horizontal ? i : row][!horizontal ? i : col] !== null) {
+        throw new Error('Field not available.');
+      } 
     }
   }
 }

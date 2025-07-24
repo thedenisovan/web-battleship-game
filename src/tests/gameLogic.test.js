@@ -1,33 +1,42 @@
-import { Ship, GameBoard } from "../gameLogic.js";
+import { Ship, GameBoard } from '../gameLogic.js';
 
-describe("Testing ship hit behavior", () => {
+describe('Testing ship hit behavior', () => {
   let destroyer;
 
-  beforeAll(() => {
+  beforeEach(() => {
     destroyer = new Ship(2);
   });
 
-  test("Ship has been hit.", () => {
+  test('Ship has been hit', () => {
     expect(destroyer.hit()).toEqual(1);
   });
-  test("Ship has been sunken.", () => {
+  test('Ship has been sunken', () => {
+    destroyer.hit();
     expect(destroyer.hit()).toEqual(2);
   });
 });
 
-describe("Testing game board behavior", () => {
+describe('Testing game board behavior', () => {
   let gameBoard;
 
   beforeAll(() => {
     gameBoard = new GameBoard();
   });
 
-  test("Place ship at given coordinates", () => {
-    gameBoard.placeShip(2, [[1], [1]]);
-    expect(gameBoard.board[1][1]).not.toBeNull();
+  test('places a ship at the given coordinates when empty', () => {
+    gameBoard.placeShip(3, [1, 7]);
+    expect(gameBoard.board[2][7]).not.toBeNull();
   });
-  test("Place ship at given coordinates", () => {
-    gameBoard.placeShip(5, [[1], [1]]);
-    expect(gameBoard.board[2][1]).not.toBeNull();
+  test('Look for ship at given coordinates', () => {
+    expect(gameBoard.board[3][7]).not.toBeNull();
+  });
+  test('Throws error when ship is not right size', () => {
+    expect(() => gameBoard.placeShip(6, [1, 7])).toThrow();
+  });
+  test('Throws error when ship goes out of game board', () => {
+    expect(() => gameBoard.placeShip(3, [8, 8])).toThrow();
+  });
+  test('Places a ship at the given coordinates when not empty', () => {
+    expect(() => gameBoard.placeShip(3, [1, 7])).toThrow();
   });
 });
