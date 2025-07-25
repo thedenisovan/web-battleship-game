@@ -1,30 +1,34 @@
 export class Ship {
+  #hits = 0;
+  #isLive = true;
   constructor(length) {
     this.length = length;
-    this.hits = 0;
-    this.isLive = true;
   }
   // Function to damage ship
   hit() {
-    if (this.isLive) {
-      this.hits++;
+    if (this.#isLive) {
+      this.#hits++;
       this.#isSunk();
     }
-    return this.hits;
+    return this.#hits;
   }
   // Helper function which sets ship to sunken
   #isSunk() {
-    if (this.hits >= this.length) {
-      this.isLive = false;
+    if (this.#hits >= this.length) {
+      this.#isLive = false;
     }
+  }
+  
+  get isLive() {
+    return this.#isLive;
   }
 }
 
 export class GameBoard {
   #MAX_INDEX = 9;
+  #ships = [];
   constructor() {
     this.board = this.#generateBoard();
-    this.ships = [];
   }
   // Creates 2d game board
   #generateBoard() {
@@ -45,7 +49,7 @@ export class GameBoard {
     this.#errorHandling(length, start, vertical);
 
     let ship = new Ship(length);
-    this.ships.push(ship);
+    this.#ships.push(ship);
 
     // If direction is vertical add ship in vertical line, else horizontal 
     for (let i = direction; i < direction + length; i++) {
@@ -97,10 +101,10 @@ export class GameBoard {
     }
   }
   #checkForSunkShip() {
-    const originalLength = this.ships.length;
-    this.ships = this.ships.filter((ship) => ship.isLive)
+    const originalLength = this.#ships.length;
+    this.#ships = this.#ships.filter((ship) => ship.isLive)
     
-    if (originalLength !== this.ships.length) return true;
+    if (originalLength !== this.#ships.length) return true;
     else return false;
   }
 }
