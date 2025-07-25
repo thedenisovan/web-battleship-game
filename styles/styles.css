@@ -1,6 +1,6 @@
 :root {
   --bar-width: 200px;
-  --field-size: 602px;
+  --field-size: 600px;
 }
 * {
   border: 1px solid red;
@@ -13,6 +13,9 @@ body {
 body .left-bar {
   flex: .2;
   min-width: var(--bar-width);
+}
+body .left-bar .port .ship {
+  display: flex;
 }
 body .right-bar {
   flex: .8;
