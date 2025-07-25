@@ -1,4 +1,4 @@
-import { Ship, GameBoard } from '../gameLogic.js';
+import { Ship, GameBoard } from '../gamePlay.js';
 
 describe('Testing ship hit behavior', () => {
   let destroyer;

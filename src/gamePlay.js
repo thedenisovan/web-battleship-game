@@ -37,43 +37,39 @@ export class GameBoard {
     }
     return board;
   }
-  // Places ship in given Coordinate's on horizontal or vertical
-  placeShip(length, start, horizontal = true) {
+  // Places ship in given Coordinate's on vertical or horizontal
+  placeShip(length, start, vertical = true) {
     let [row, col] = start;
+    let direction = vertical ? row : col;
 
-    this.#errorHandling(length, start, horizontal);
+    this.#errorHandling(length, start, vertical);
 
     let ship = new Ship(length);
     this.ships.push(ship);
 
-    if (horizontal) {
-      for (let i = row; i < length + row; i++) {
-        this.board[i][col] = ship;
-      }
-    } else {
-      for (let i = col; i < length + col; i++) {
-        this.board[row][i] = ship;
-      }
+    // If direction is vertical add ship in vertical line, else horizontal 
+    for (let i = direction; i < direction + length; i++) {
+      this.board[vertical ? i : row][!vertical ? i : col] = ship;
     }
   }
   // Helper function to test ship size and ship's Coordinate's
-  #errorHandling(length, start, horizontal) {
+  #errorHandling(length, start, vertical) {
     let [row, col] = start;
-    let direction = horizontal ? row : col;
+    let direction = vertical ? row : col;
 
     if (length > 5 || length < 2) {
       throw new Error("Ship's size is out of bounds.");
     } else if (
-      (horizontal && row + length > this.#MAX_INDEX) ||
-      (!horizontal && col + length > this.#MAX_INDEX) ||
+      (vertical && row + length > this.#MAX_INDEX) ||
+      (!vertical && col + length > this.#MAX_INDEX) ||
       row < 0 ||
       col < 0
     ) {
       throw new Error('Coordinates are out of boundaries.');
     }
-    // Check if fields are available - both horizontal and vertical
+    // If direction is vertical check if fields are available vertical dir, else horizontal
     for (let i = direction; i < direction + length; i++) {
-      if (this.board[horizontal ? i : row][!horizontal ? i : col] !== null) {
+      if (this.board[vertical ? i : row][!vertical ? i : col] !== null) {
         throw new Error('Field not available.');
       }
     }
@@ -96,11 +92,11 @@ export class GameBoard {
     } else { // If attack has been successful
       this.board[row][col].hit();
       this.board[row][col] = 'x';
-      if (this.#checkForSunkSip()) return 'You sunk a ship.';
+      if (this.#checkForSunkShip()) return 'You sunk a ship.';
       else return 'Hit.';
     }
   }
-  #checkForSunkSip() {
+  #checkForSunkShip() {
     const originalLength = this.ships.length;
     this.ships = this.ships.filter((ship) => ship.isLive)
     
