@@ -1,3 +1,55 @@
+:root {
+  --bar-width: 200px;
+  --field-size: 602px;
+}
 * {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid red;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+}
+body .left-bar {
+  flex: .2;
+  min-width: var(--bar-width);
+}
+body .right-bar {
+  flex: .8;
+  display: grid;
+  grid-template-areas: 
+    "header header header header header"
+    "main main main main main"
+    "main main main main main"
+    "main main main main main"
+    "footer footer footer footer footer";
+}
+.right-bar header {
+  grid-area: header;
+}
+.right-bar main {
+  grid-area: main;
+  display: grid;
+  grid-template-areas: 
+    "left-field left-field nav right-field right-field"
+}
+.right-bar footer {
+  grid-area: footer;
+}
+.right-bar main .field {
+  display: flex;
+  margin: auto;
+  flex-wrap: wrap;
+  width: var(--field-size);
+  height: var(--field-size);
+}
+.right-bar main .battlefield-left {
+  grid-area: left-field;
+}
+.right-bar main .battlefield-right {
+  grid-area: right-field;
+}
+.right-bar main .interactions {
+  grid-area: nav;
+  min-width: var(--bar-width);
 }
