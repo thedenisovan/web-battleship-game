@@ -10,3 +10,11 @@ player1.gameBoard.placeShip(2, [7, 1], false);
 player1.gameBoard.placeShip(5, [4, 4], true);
 
 computer.randomPlacement();
+computer.computerMove(player1);
+computer.computerMove(player1);
+computer.computerMove(player1);
+computer.computerMove(player1);
+computer.computerMove(player1);
+
+
+console.log(player1.gameBoard.board);

@@ -115,26 +115,37 @@ export class AiPlayer extends Player {
     super();
   }
 
-  randomIdx() {
-    let randomCoord = Math.floor(Math.random() * 10);
-    return randomCoord;
+  #randomIdx() {
+    return Math.floor(Math.random() * 10);
   }
-  direction() {
-    return true ? this.randomIdx() > 5 : false;
+  #direction() {
+    return true ? this.#randomIdx() > 5 : false;
   }
   // Places computers ships at random position
   randomPlacement() {
+    let x = this.#randomIdx();
+    let y = this.#randomIdx();
     const ships = [5, 4, 3, 3, 2];
 
     while (ships.length > 0) {
       let currentShip = ships.shift();
-      let xAxi = this.randomIdx();
-      let yAxi = this.randomIdx();
 
-      while (this.gameBoard.placeShip(currentShip, [xAxi, yAxi], this.direction()) === null) {
-        xAxi = this.randomIdx();
-        yAxi = this.randomIdx();
+      // While coordinates are not legal change them and try again
+      while (this.gameBoard.placeShip(currentShip, [x, y], this.#direction()) === null) {
+        x = this.#randomIdx();
+        y = this.#randomIdx();
       }
     }
+  }
+  computerMove(player) {
+    let x = this.#randomIdx();
+    let y = this.#randomIdx();
+    let board = player.gameBoard.board;
+
+    while (board[x][y] === 'o' || board[x][y] === 'x') {
+      x = this.#randomIdx();
+      y = this.#randomIdx();
+    }
+    player.gameBoard.receiveAttack(x, y);
   }
 }

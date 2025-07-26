@@ -1,6 +1,8 @@
 import { player1, computer } from './controls.js';
 import { Ship } from './gamePlay.js';
 
+const [red, green, blue] = ['rgba(250, 4, 5, 0.7)', 'rgba(5, 250, 5, 0.7)', 'rgba(4, 4, 250, 0.7)'];
+
 // For each battlefield create a grid of 10x10 cells
 document.querySelectorAll('[data-battlefield]').forEach((field) => {
   createGrid(10, field);
@@ -30,19 +32,23 @@ document.querySelectorAll('[data-ship]').forEach((ship) => {
 
 document.querySelectorAll('.battlefield-right .cell').forEach((cell) => {
   if (computer.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
-    cell.style.background = 'rgba(4, 4, 250, 0.7)';
+    cell.style.background = blue;
   }
   cell.addEventListener('click', () => {
     computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
     if (computer.gameBoard.board[cell.id[0]][cell.id[1]] === 'x') {
-      cell.style.background = 'rgba(250, 4, 5, 0.7)';
+      cell.style.background = red;
     } else if (computer.gameBoard.board[cell.id[0]][cell.id[1]] === 'o') {
-      cell.style.background = 'rgba(5, 250, 5, 0.7)';
+      cell.style.background = green;
     }
   });
 });
 document.querySelectorAll('.battlefield-left .cell').forEach((cell) => {
-  if (player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
-    cell.style.background = 'rgba(4, 4, 250, 0.7)';
+   if (player1.gameBoard.board[cell.id[0]][cell.id[1]] === 'x') {
+      cell.style.background = red;
+    } else if (player1.gameBoard.board[cell.id[0]][cell.id[1]] === 'o') {
+      cell.style.background = green;
+    } else if (player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
+    cell.style.background = blue;
   }
 });
