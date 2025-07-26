@@ -18,7 +18,7 @@ export class Ship {
       this.#isLive = false;
     }
   }
-  
+
   get isLive() {
     return this.#isLive;
   }
@@ -46,12 +46,12 @@ export class GameBoard {
     let [row, col] = start;
     let direction = vertical ? row : col;
 
-    this.#errorHandling(length, start, vertical);
+    if (this.#errorHandling(length, start, vertical)) return null;
 
     let ship = new Ship(length);
     this.#ships.push(ship);
 
-    // If direction is vertical add ship in vertical line, else horizontal 
+    // If direction is vertical add ship in vertical line, else horizontal
     for (let i = direction; i < direction + length; i++) {
       this.board[vertical ? i : row][!vertical ? i : col] = ship;
     }
@@ -61,39 +61,34 @@ export class GameBoard {
     let [row, col] = start;
     let direction = vertical ? row : col;
 
-    if (length > 5 || length < 2) {
-      throw new Error("Ship's size is out of bounds.");
-    } else if (
+    if (length > 5 || length < 2) return true;
+    else if (
       (vertical && row + length > this.#MAX_INDEX) ||
       (!vertical && col + length > this.#MAX_INDEX) ||
       row < 0 ||
       col < 0
     ) {
-      throw new Error('Coordinates are out of boundaries.');
+      return true;
     }
     // If direction is vertical check if fields are available vertical dir, else horizontal
     for (let i = direction; i < direction + length; i++) {
-      if (this.board[vertical ? i : row][!vertical ? i : col] !== null) {
-        throw new Error('Field not available.');
-      }
+      if (this.board[vertical ? i : row][!vertical ? i : col] !== null)
+        return true;
     }
   }
   receiveAttack(row, col) {
-    if (
-      row > this.#MAX_INDEX ||
-      row < 0 ||
-      col > this.#MAX_INDEX ||
-      col < 0
-    )
+    if (row > this.#MAX_INDEX || row < 0 || col > this.#MAX_INDEX || col < 0)
       throw new Error('Wrong coordinate input.');
 
     // If cell have been attacked before
     if (this.board[row][col] === 'o' || this.board[row][col] === 'x') {
       return null;
-    } else if (this.board[row][col] === null) { // If cell attack has been missed
+    } else if (this.board[row][col] === null) {
+      // If cell attack has been missed
       this.board[row][col] = 'o';
       return 'Missed.';
-    } else { // If attack has been successful
+    } else {
+      // If attack has been successful
       this.board[row][col].hit();
       this.board[row][col] = 'x';
       if (this.#checkForSunkShip()) return 'You sunk a ship.';
@@ -102,8 +97,8 @@ export class GameBoard {
   }
   #checkForSunkShip() {
     const originalLength = this.#ships.length;
-    this.#ships = this.#ships.filter((ship) => ship.isLive)
-    
+    this.#ships = this.#ships.filter((ship) => ship.isLive);
+
     if (originalLength !== this.#ships.length) return true;
     else return false;
   }
@@ -111,6 +106,35 @@ export class GameBoard {
 
 export class Player {
   constructor() {
-    this.gameBoard = new GameBoard;
+    this.gameBoard = new GameBoard();
+  }
+}
+
+export class AiPlayer extends Player {
+  constructor() {
+    super();
+  }
+
+  randomIdx() {
+    let randomCoord = Math.floor(Math.random() * 10);
+    return randomCoord;
+  }
+  direction() {
+    return true ? this.randomIdx() > 5 : false;
+  }
+  // Places computers ships at random position
+  randomPlacement() {
+    const ships = [5, 4, 3, 3, 2];
+
+    while (ships.length > 0) {
+      let currentShip = ships.shift();
+      let xAxi = this.randomIdx();
+      let yAxi = this.randomIdx();
+
+      while (this.gameBoard.placeShip(currentShip, [xAxi, yAxi], this.direction()) === null) {
+        xAxi = this.randomIdx();
+        yAxi = this.randomIdx();
+      }
+    }
   }
 }

@@ -30,14 +30,14 @@ describe('Testing game board behavior', () => {
   test('Look for ship at given coordinates', () => {
     expect(gameBoard.board[3][7]).not.toBeNull();
   });
-  test('Throws error when ship is not right size', () => {
-    expect(() => gameBoard.placeShip(6, [1, 7])).toThrow();
+  test('Return null when ship is wrong size', () => {
+    expect(gameBoard.placeShip(6, [2, 2])).toBeNull();
   });
-  test('Throws error when ship goes out of game board', () => {
-    expect(() => gameBoard.placeShip(3, [8, 8])).toThrow();
+  test('Return null when ship goes out of game board', () => {
+    expect(gameBoard.placeShip(6, [8, 8])).toBeNull();
   });
   test('Places a ship at the given coordinates when not empty', () => {
-    expect(() => gameBoard.placeShip(3, [1, 7])).toThrow();
+    expect(gameBoard.placeShip(3, [1, 7])).toBeNull();
   });
 
   test('Missed attack on ship', () => {

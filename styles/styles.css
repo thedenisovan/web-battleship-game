@@ -1,7 +1,7 @@
 :root {
   --bar-width: 200px;
   --field-size: 600px;
-  --border: 1px solid red;
+  --border: 1px solid black;
 }
 
 body {
@@ -9,7 +9,7 @@ body {
   height: 100vh;
 }
 body .left-bar {
-  flex: .2;
+  flex: 0.2;
   min-width: var(--bar-width);
   border: var(--border);
 }
@@ -22,14 +22,14 @@ body .left-bar .port .ship .square {
   border: var(--border);
 }
 body .right-bar {
-  flex: .8;
+  flex: 0.8;
   display: grid;
-  grid-template-areas: 
-    "header header header header header"
-    "main main main main main"
-    "main main main main main"
-    "main main main main main"
-    "footer footer footer footer footer";
+  grid-template-areas:
+    'header header header header header'
+    'main main main main main'
+    'main main main main main'
+    'main main main main main'
+    'footer footer footer footer footer';
 }
 .right-bar header {
   grid-area: header;
@@ -38,8 +38,7 @@ body .right-bar {
   border: var(--border);
   grid-area: main;
   display: grid;
-  grid-template-areas: 
-    "left-field left-field nav right-field right-field"
+  grid-template-areas: 'left-field left-field nav right-field right-field';
 }
 .right-bar footer {
   grid-area: footer;
