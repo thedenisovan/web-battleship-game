@@ -3,18 +3,15 @@ import { Player, AiPlayer } from './gamePlay.js';
 export let player1 = new Player();
 export let computer = new AiPlayer();
 
-player1.gameBoard.placeShip(4, [0, 0], false);
-player1.gameBoard.placeShip(3, [2, 6], true);
-player1.gameBoard.placeShip(3, [8, 6], false);
-player1.gameBoard.placeShip(2, [7, 1], false);
-player1.gameBoard.placeShip(5, [4, 4], true);
+// Render moves after each attack
+export function renderMoves(field, player) {
+  const [red, green] = ['rgba(250, 4, 5, 0.7)', 'rgba(5, 250, 5, 0.7)'];
 
-computer.randomPlacement();
-computer.computerMove(player1);
-computer.computerMove(player1);
-computer.computerMove(player1);
-computer.computerMove(player1);
-computer.computerMove(player1);
-
-
-console.log(player1.gameBoard.board);
+  document.querySelectorAll(`${[field]} .cell`).forEach((cell) => {
+    if (player.gameBoard.board[cell.id[0]][cell.id[1]] === 'x') {
+        cell.style.background = red;
+      } else if (player.gameBoard.board[cell.id[0]][cell.id[1]] === 'o') {
+        cell.style.background = green;
+      }
+  });
+}

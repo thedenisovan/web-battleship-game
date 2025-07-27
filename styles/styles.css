@@ -38,6 +38,7 @@ body .right-bar {
   border: var(--border);
   grid-area: main;
   display: grid;
+  grid-template-columns: 1fr 1fr var(--bar-width) 1fr 1fr;
   grid-template-areas: 'left-field left-field nav right-field right-field';
 }
 .right-bar footer {
@@ -62,11 +63,5 @@ body .right-bar {
   border: var(--border);
 }
 .right-bar main .interactions {
-  height: 600px;
-  margin: auto;
   grid-area: nav;
-  min-width: var(--bar-width);
-  justify-content: start;
-  display: flex;
-  align-items: start;
 }

@@ -1,12 +1,22 @@
-import { player1, computer } from './controls.js';
+import { player1, computer, renderMoves } from './controls.js';
 import { Ship } from './gamePlay.js';
-
-const [red, green, blue] = ['rgba(250, 4, 5, 0.7)', 'rgba(5, 250, 5, 0.7)', 'rgba(4, 4, 250, 0.7)'];
+generatePlayerShips();
 
 // For each battlefield create a grid of 10x10 cells
-document.querySelectorAll('[data-battlefield]').forEach((field) => {
+document.querySelectorAll('.field').forEach((field) => {
   createGrid(10, field);
-  field.style.background = './assets/background.jpg';
+});
+document.querySelectorAll('[data-battlefield-right] .cell').forEach((cell) => {
+  cell.addEventListener('click', () => {
+    computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
+    renderMoves('[data-battlefield-right]', computer);
+  });
+});
+document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
+    renderMoves('[data-battlefield-left]', player1);
+    if (player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
+      cell.style.background = 'rgba(4, 4, 250, 0.7)';
+    }
 });
 
 function createGrid(size, element) {
@@ -22,33 +32,12 @@ function createGrid(size, element) {
 }
 
 // Creates squared blocks representing a player ships
-document.querySelectorAll('[data-ship]').forEach((ship) => {
-  for (let i = 0; i < ship.id; i++) {
-    const square = document.createElement('div');
-    square.classList.add('square');
-    ship.appendChild(square);
-  }
-});
-
-document.querySelectorAll('.battlefield-right .cell').forEach((cell) => {
-  if (computer.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
-    cell.style.background = blue;
-  }
-  cell.addEventListener('click', () => {
-    computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
-    if (computer.gameBoard.board[cell.id[0]][cell.id[1]] === 'x') {
-      cell.style.background = red;
-    } else if (computer.gameBoard.board[cell.id[0]][cell.id[1]] === 'o') {
-      cell.style.background = green;
+function generatePlayerShips() {
+  document.querySelectorAll('[data-ship]').forEach((ship) => {
+    for (let i = 0; i < ship.id; i++) {
+      const square = document.createElement('div');
+      square.classList.add('square');
+      ship.appendChild(square);
     }
-  });
 });
-document.querySelectorAll('.battlefield-left .cell').forEach((cell) => {
-   if (player1.gameBoard.board[cell.id[0]][cell.id[1]] === 'x') {
-      cell.style.background = red;
-    } else if (player1.gameBoard.board[cell.id[0]][cell.id[1]] === 'o') {
-      cell.style.background = green;
-    } else if (player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
-    cell.style.background = blue;
-  }
-});
+}
