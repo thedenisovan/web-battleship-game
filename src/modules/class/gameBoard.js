@@ -1,28 +1,4 @@
-export class Ship {
-  #hits = 0;
-  #isLive = true;
-  constructor(length) {
-    this.length = length;
-  }
-  // Function to damage ship
-  hit() {
-    if (this.#isLive) {
-      this.#hits++;
-      this.#isSunk();
-    }
-    return this.#hits;
-  }
-  // Helper function which sets ship to sunken
-  #isSunk() {
-    if (this.#hits >= this.length) {
-      this.#isLive = false;
-    }
-  }
-
-  get isLive() {
-    return this.#isLive;
-  }
-}
+import { Ship } from './ship.js';
 
 export class GameBoard {
   #MAX_INDEX = 9;
@@ -30,7 +6,7 @@ export class GameBoard {
   constructor() {
     this.board = this.#generateBoard();
   }
-  // Creates 2d game board
+  // Creates 2d game board as array of nulls
   #generateBoard() {
     let board = [];
     for (let i = 0; i < this.#MAX_INDEX + 1; i++) {
@@ -40,6 +16,10 @@ export class GameBoard {
       }
     }
     return board;
+  }
+  resetBoard() {
+    this.board = null;
+    this.board = this.#generateBoard();
   }
   // Places ship in given Coordinate's on vertical or horizontal
   placeShip(length, start, vertical = true) {
@@ -101,51 +81,5 @@ export class GameBoard {
 
     if (originalLength !== this.#ships.length) return true;
     else return false;
-  }
-}
-
-export class Player {
-  constructor() {
-    this.gameBoard = new GameBoard();
-  }
-}
-
-export class AiPlayer extends Player {
-  constructor() {
-    super();
-  }
-
-  #randomIdx() {
-    return Math.floor(Math.random() * 10);
-  }
-  #direction() {
-    return true ? this.#randomIdx() > 5 : false;
-  }
-  // Places computers ships at random position
-  randomPlacement() {
-    let x = this.#randomIdx();
-    let y = this.#randomIdx();
-    const ships = [5, 4, 3, 3, 2];
-
-    while (ships.length > 0) {
-      let currentShip = ships.shift();
-
-      // While coordinates are not legal change them and try again
-      while (this.gameBoard.placeShip(currentShip, [x, y], this.#direction()) === null) {
-        x = this.#randomIdx();
-        y = this.#randomIdx();
-      }
-    }
-  }
-  computerMove(player) {
-    let x = this.#randomIdx();
-    let y = this.#randomIdx();
-    let board = player.gameBoard.board;
-
-    while (board[x][y] === 'o' || board[x][y] === 'x') {
-      x = this.#randomIdx();
-      y = this.#randomIdx();
-    }
-    player.gameBoard.receiveAttack(x, y);
   }
 }

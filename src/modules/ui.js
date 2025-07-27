@@ -1,22 +1,10 @@
-import { player1, computer, renderMoves } from './controls.js';
-import { Ship } from './gamePlay.js';
+import * as control from './controls.js';
+import { Ship } from './class/ship.js';
 generatePlayerShips();
 
 // For each battlefield create a grid of 10x10 cells
 document.querySelectorAll('.field').forEach((field) => {
   createGrid(10, field);
-});
-document.querySelectorAll('[data-battlefield-right] .cell').forEach((cell) => {
-  cell.addEventListener('click', () => {
-    computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
-    renderMoves('[data-battlefield-right]', computer);
-  });
-});
-document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
-    renderMoves('[data-battlefield-left]', player1);
-    if (player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship) {
-      cell.style.background = 'rgba(4, 4, 250, 0.7)';
-    }
 });
 
 function createGrid(size, element) {
@@ -39,5 +27,43 @@ function generatePlayerShips() {
       square.classList.add('square');
       ship.appendChild(square);
     }
-});
+  });
 }
+
+// Render display after each attack
+export function renderFieldAfterAttack(field, player) {
+  const [red, green] = ['rgba(250, 4, 5, 0.7)', 'rgba(5, 250, 5, 0.7)'];
+
+  document.querySelectorAll(`${[field]} .cell`).forEach((cell) => {
+    const currentCell = player.gameBoard.board[cell.id[0]][cell.id[1]];
+
+    if (currentCell === 'x') {
+      cell.style.background = red;
+    } else if (currentCell === 'o') {
+      cell.style.background = green;
+    }
+  });
+}
+
+// Renders player ships placement on game board
+export function shipPlacement() {
+  resetBoardCells('[data-battlefield-left]');
+
+  document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
+    renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+    if (
+      control.player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship
+    ) {
+      cell.style.background = 'rgba(4, 4, 250, 0.7)';
+    }
+  });
+}
+
+// Resets looks of board
+function resetBoardCells(field) {
+  document.querySelectorAll(`${field} .cell`).forEach((cell) => {
+    cell.style.background = 'none';
+  });
+}
+
+control.renderAttack();

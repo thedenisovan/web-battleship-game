@@ -1,5 +1,5 @@
 :root {
-  --bar-width: 200px;
+  --bar-width: 150px;
   --field-size: 600px;
   --border: 1px solid black;
 }
@@ -9,7 +9,7 @@ body {
   height: 100vh;
 }
 body .left-bar {
-  flex: 0.2;
+  flex: 0.15;
   min-width: var(--bar-width);
   border: var(--border);
 }
@@ -22,7 +22,7 @@ body .left-bar .port .ship .square {
   border: var(--border);
 }
 body .right-bar {
-  flex: 0.8;
+  flex: 0.85;
   display: grid;
   grid-template-areas:
     'header header header header header'
@@ -38,8 +38,7 @@ body .right-bar {
   border: var(--border);
   grid-area: main;
   display: grid;
-  grid-template-columns: 1fr 1fr var(--bar-width) 1fr 1fr;
-  grid-template-areas: 'left-field left-field nav right-field right-field';
+  grid-template-areas: 'left-field nav right-field';
 }
 .right-bar footer {
   grid-area: footer;
@@ -63,5 +62,6 @@ body .right-bar {
   border: var(--border);
 }
 .right-bar main .interactions {
+  min-width: var(--bar-width);
   grid-area: nav;
 }
