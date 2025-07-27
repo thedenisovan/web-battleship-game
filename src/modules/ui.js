@@ -1,62 +1,63 @@
 import * as control from './controls.js';
-import { Ship } from './class/ship.js';
-generatePlayerShips();
+import { Ship } from './classes.js';
 
-// For each battlefield create a grid of 10x10 cells
-document.querySelectorAll('.field').forEach((field) => {
-  createGrid(10, field);
-});
+const RED_HIT_COLOR = 'rgba(250, 4, 5, 0.7)';
+const GREEN_MISS_COLOR = 'rgba(5, 250, 5, 0.7)';
+const BLUE_SHIP_COLOR = 'rgba(4, 4, 250, 0.7)';
+const MAX_BOARD_SIZE = 10;
 
-function createGrid(size, element) {
-  for (let i = 0; i < size * size; i++) {
-    const cell = document.createElement('div');
+(function createGrid(size) {
+  document.querySelectorAll('.field').forEach((field) => {
+    for (let i = 0; i < size * size; i++) {
+      const cell = document.createElement('div');
 
-    cell.style.height = `${100 / size}%`;
-    cell.style.width = `${100 / size}%`;
-    cell.classList.add('cell');
-    cell.id = i < 10 ? '0' + i : i; // Id to use as idx of battleships
-    element.appendChild(cell);
-  }
-}
+      cell.style.height = `${100 / size}%`;
+      cell.style.width = `${100 / size}%`;
+      cell.classList.add('cell');
 
-// Creates squared blocks representing a player ships
-function generatePlayerShips() {
-  document.querySelectorAll('[data-ship]').forEach((ship) => {
-    for (let i = 0; i < ship.id; i++) {
-      const square = document.createElement('div');
-      square.classList.add('square');
-      ship.appendChild(square);
+      cell.id = i < 10 ? '0' + i : i;
+      field.appendChild(cell);
     }
   });
-}
+})(MAX_BOARD_SIZE);
+
+export const PLAYER_BOARD_SELECTOR = document.querySelectorAll('[data-battlefield-left] .cell');
+export const ENEMY_BOARD_SELECTOR = document.querySelectorAll('[data-battlefield-right] .cell');
 
 // Render display after each attack
 export function renderFieldAfterAttack(field, player) {
-  const [red, green] = ['rgba(250, 4, 5, 0.7)', 'rgba(5, 250, 5, 0.7)'];
-
   document.querySelectorAll(`${[field]} .cell`).forEach((cell) => {
     const currentCell = player.gameBoard.board[cell.id[0]][cell.id[1]];
 
     if (currentCell === 'x') {
-      cell.style.background = red;
+      cell.style.background = RED_HIT_COLOR;
     } else if (currentCell === 'o') {
-      cell.style.background = green;
+      cell.style.background = GREEN_MISS_COLOR;
     }
   });
 }
 
 // Renders player ships placement on game board
-export function shipPlacement() {
+export function renderShipsOnBoard() {
   resetBoardCells('[data-battlefield-left]');
+  renderFieldAfterAttack('[data-battlefield-left]', control.player1);
 
-  document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
-    renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+  PLAYER_BOARD_SELECTOR.forEach((cell) => {
     if (
       control.player1.gameBoard.board[cell.id[0]][cell.id[1]] instanceof Ship
     ) {
-      cell.style.background = 'rgba(4, 4, 250, 0.7)';
+      cell.style.background = BLUE_SHIP_COLOR;
     }
   });
+}
+
+// Toggles between disabled and enabled board style
+export function toggleEnemyBoard(flag) {
+  if (flag) {
+    ENEMY_BOARD_SELECTOR.forEach((cell) => cell.classList.remove('disabled'));
+  } else {
+    ENEMY_BOARD_SELECTOR.forEach((cell) => cell.classList.add('disabled'));
+  }
 }
 
 // Resets looks of board
@@ -66,4 +67,16 @@ function resetBoardCells(field) {
   });
 }
 
-control.renderAttack();
+toggleEnemyBoard(control.flags.isGameOn);
+
+
+// Creates squared blocks representing a player ships on side of the field
+function renderPlayerShips() {
+  document.querySelectorAll('[data-ship]').forEach((ship) => {
+    for (let i = 0; i < ship.id; i++) {
+      const square = document.createElement('div');
+      square.classList.add('square');
+      ship.appendChild(square);
+    }
+  });
+}

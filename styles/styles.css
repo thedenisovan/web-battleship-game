@@ -1,7 +1,7 @@
 :root {
   --bar-width: 150px;
   --field-size: 600px;
-  --border: 1px solid black;
+  --border: 1px solid rgb(111, 111, 111);
 }
 
 body {
@@ -38,7 +38,7 @@ body .right-bar {
   border: var(--border);
   grid-area: main;
   display: grid;
-  grid-template-areas: 'left-field nav right-field';
+  grid-template-areas: 'left-field left-field nav right-field right-field';
 }
 .right-bar footer {
   grid-area: footer;
@@ -52,16 +52,27 @@ body .right-bar {
   width: var(--field-size);
   height: var(--field-size);
 }
-.right-bar main .battlefield-left {
+.right-bar main #battlefield-left {
   grid-area: left-field;
 }
-.right-bar main .battlefield-right {
+.right-bar main #battlefield-right {
   grid-area: right-field;
 }
 .field .cell {
   border: var(--border);
+  cursor: pointer;
+}
+.disabled {
+  background-color: rgba(128, 128, 128, 0.6);
+  border: 1px solid gray;
+}
+.disabled:hover {
+  cursor: not-allowed;
 }
 .right-bar main .interactions {
   min-width: var(--bar-width);
   grid-area: nav;
+}
+.hidden {
+  display: none;
 }
