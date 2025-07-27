@@ -32,7 +32,7 @@ export class GameBoard {
   constructor() {
     this.board = this.#generateBoard();
   }
-  // Creates 2d game board as array of nulls
+  // Creates 2d game board, each empty position is set to null
   #generateBoard() {
     let board = [];
     for (let i = 0; i < this.#MAX_INDEX + 1; i++) {
@@ -47,7 +47,7 @@ export class GameBoard {
     this.board = null;
     this.board = this.#generateBoard();
   }
-  // Places ship in given Coordinate's on vertical or horizontal
+  // Places ship in given Coordinate's on vertical or horizontal axis
   placeShip(length, start, vertical = true) {
     let [row, col] = start;
     let direction = vertical ? row : col;
@@ -61,8 +61,9 @@ export class GameBoard {
     for (let i = direction; i < direction + length; i++) {
       this.board[vertical ? i : row][!vertical ? i : col] = ship;
     }
+    return true;
   }
-  // Helper function to test ship size and ship's Coordinate's
+  // Helper function to check if ship has been placed correctly
   #errorHandling(length, start, vertical) {
     let [row, col] = start;
     let direction = vertical ? row : col;
@@ -81,6 +82,7 @@ export class GameBoard {
       if (this.board[vertical ? i : row][!vertical ? i : col] !== null)
         return true;
     }
+    return false;
   }
   receiveAttack(row, col) {
     if (row > this.#MAX_INDEX || row < 0 || col > this.#MAX_INDEX || col < 0)
@@ -119,7 +121,7 @@ export class Player {
     return Math.floor(Math.random() * 10);
   }
   direction() {
-    return true ? this.randomIdx() > 5 : false;
+    return this.randomIdx() > 5;
   }
   // Places ships at random position
   randomPlacement() {

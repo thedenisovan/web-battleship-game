@@ -26,19 +26,22 @@ function toggleGameStatus() {
 
 // Listens for user attack to take place, then calls render function
 function renderAttack() {
-  if (flags.isGameOn && flags.isPlayerMove) {
-    flags.isPlayerMove = false;
-    ui.ENEMY_BOARD_SELECTOR.forEach((cell) => {
-      cell.addEventListener('click', () => {
-        computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
-        ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
-        setTimeout(() => {
-          computer.computerAttack(player1);
-          ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-        }, 1000);
-        return 0;
+  if (flags.isGameOn) {
+    if (flags.isPlayerMove) {
+      ui.ENEMY_BOARD_SELECTOR.forEach((cell) => {
+        cell.addEventListener('click', () => {
+          computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
+          ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
+          flags.isPlayerMove = false;
+        });
       });
-    });
+    } else {
+      setTimeout(() => {
+        computer.computerAttack(player1);
+        ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
+        flags.isPlayerMove = true;
+      }, 1000);
+    }
   }
 }
 
