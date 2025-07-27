@@ -26,22 +26,8 @@ function toggleGameStatus() {
 
 // Listens for user attack to take place, then calls render function
 function renderAttack() {
-  if (flags.isGameOn) {
-    if (flags.isPlayerMove) {
-      ui.ENEMY_BOARD_SELECTOR.forEach((cell) => {
-        cell.addEventListener('click', () => {
-          computer.gameBoard.receiveAttack(cell.id[0], cell.id[1]);
-          ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
-          flags.isPlayerMove = false;
-        });
-      });
-    } else {
-      setTimeout(() => {
-        computer.computerAttack(player1);
-        ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-        flags.isPlayerMove = true;
-      }, 1000);
-    }
+  if (flags.isGameOn && flags.isPlayerMove) {
+    attachEventDelegation();
   }
 }
 
@@ -63,3 +49,25 @@ playBtn.addEventListener('click', () => {
   renderAttack();
   computer.randomPlacement();
 });
+
+function handleBattlefieldClick(event) {
+  const target = event.target;
+
+  if (target.classList.contains('cell')) {
+    computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
+    ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
+    flags.isPlayerMove = false;
+  }
+}
+
+function attachEventDelegation() {
+  document.querySelector('[data-battlefield-right]')
+    .addEventListener('click', handleBattlefieldClick);
+}
+
+function detachEventDelegation() {
+  document.querySelector('[data-battlefield-right]')
+    .removeEventListener('click', handleBattlefieldClick);
+}
+
+
