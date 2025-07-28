@@ -69,12 +69,18 @@ function resetBoardCells(field) {
 }
 
 export function changeDisplayText() {
-  if (!control.flags.isGameOn) {
-    display.textContent = 'Place ships and you are ready to begin sea battle.'
-  } else if (control.flags.isPlayerMove && control.flags.isGameOn) {
-    display.textContent = 'Your move skipper, attack now!'
-  } else if (!control.flags.isPlayerMove && control.flags.isGameOn) {
-    display.textContent = 'Hold your sea horses, it\'s enemy\'s turn now.'
+  switch(true) {
+    case control.flags.isPlayerMove && control.flags.isGameOn:
+      display.textContent = `Your move skipper!`
+      break;
+    case !control.flags.isPlayerMove && control.flags.isGameOn:
+      display.textContent = `Hold your horses Captain, Its computers move!`
+      break;
+    case control.flags.hasPlayerPlacedShips && !control.flags.isGameOn:
+      display.textContent = control.player1.gameBoard.lives > control.computer.gameBoard.lives ? 'Game over! You won!' : 'Game over! You lost!';
+      break;
+    default:
+      display.textContent = 'Place ships and you will be ready to begin sea battle.';
   }
 }
 

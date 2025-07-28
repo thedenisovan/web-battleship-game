@@ -31,6 +31,7 @@ export class GameBoard {
   #ships = [];
   constructor() {
     this.board = this.#generateBoard();
+    this.lives = 17;
   }
   // Creates 2d game board, each empty position is set to null
   #generateBoard() {
@@ -97,10 +98,13 @@ export class GameBoard {
       return 'Missed.';
     } else {
       // If attack has been successful
+      this.lives--;
       this.board[row][col].hit();
       this.board[row][col] = 'x';
       if (this.#checkForSunkShip()) return 'You sunk a ship.';
-      else return 'Hit.';
+      else {
+        return 'Hit';
+      }
     }
   }
   #checkForSunkShip() {

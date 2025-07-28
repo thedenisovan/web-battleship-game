@@ -3,12 +3,12 @@ import * as ui from './ui.js';
 
 export let player1 = new Player();
 export let computer = new AiPlayer();
+export let result;
 
 export const flags = {
   isGameOn: false,
   isPlayerMove: true,
   hasPlayerPlacedShips: false,
-  isGameOver: false,
 }
 
 const playBtn = document.querySelector('[data-play]');
@@ -17,7 +17,7 @@ const shuffleBtn = document.querySelector('[data-random]');
 // Toggles game from disabled to running
 // Sets computes ships at random placement
 // Attaches event delegation to enemy field;
-function toggleGameStatus() {
+function enableGame() {
   if (flags.hasPlayerPlacedShips) {
     flags.isGameOn = true;
     ui.changeDisplayText();
@@ -30,15 +30,23 @@ function toggleGameStatus() {
 }
 
 // Removes event listener from enemy field after move
-// Makes computer attack at random pos after 1s and returns event listener
-function makeComputerMove() {
+// Makes computer attack at random pos after 1s and returns resolved promise
+async function makeComputerMove() {
   detachEventDelegation();
-  setTimeout(() => {
-    computer.computerAttack(player1);
-    ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-    attachEventDelegation();
-    ui.changeDisplayText();
-  }, 1000);
+  ui.changeDisplayText();
+
+  if (flags.isGameOn && !flags.isPlayerMove) {
+    return new Promise((resolve) => {
+      setTimeout( () => {
+        let returnValue = computer.computerAttack(player1);
+        ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
+        attachEventDelegation();
+        resolve(returnValue);
+        flags.isPlayerMove = true;
+        ui.changeDisplayText();
+      }, 700);
+    });
+  }
 }
 
 function randomizeShipsOnBoard(player) {
@@ -53,14 +61,19 @@ function randomizeShipsOnBoard(player) {
 function handleBattlefieldClick(event) {
   const target = event.target;
 
-  if (target.classList.contains('cell')) {
-    computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
+  if (target.classList.contains('cell') && !target.classList.contains('disabled')) {
+
+    target.classList.add('disabled');
+    result = computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
     ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
+    ui.changeDisplayText();
+    checkGameOver();
+    // If you hit a cell containing a ship you can repeat your move
+    if (result === 'Hit' || result === 'You sunk a ship.') return;
+    
     flags.isPlayerMove = false;
+    makeComputerMove();
   }
-  ui.changeDisplayText();
-  makeComputerMove();
-  flags.isPlayerMove = true;
 }
 
 function attachEventDelegation() {
@@ -73,11 +86,24 @@ function detachEventDelegation() {
     .removeEventListener('click', handleBattlefieldClick);
 }
 
+export function checkGameOver() {
+  if (player1.gameBoard.lives < 1|| computer.gameBoard.lives < 1) {
+    disableGame();
+  }
+}
+
+function disableGame() {
+  flags.isGameOn = false;
+  flags.isPlayerMove = false;
+  detachEventDelegation();
+  ui.changeDisplayText();
+  ui.toggleEnemyBoard(flags.isGameOn);
+}
 
 shuffleBtn.addEventListener('click', () => {
-  randomizeShipsOnBoard(player1)
+  randomizeShipsOnBoard(player1);
 });
 
 playBtn.addEventListener('click', () => {
-  toggleGameStatus();
+  enableGame();
 });
