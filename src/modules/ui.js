@@ -80,3 +80,5 @@ function renderPlayerShips() {
     }
   });
 }
+
+document.querySelector('data-monitor');

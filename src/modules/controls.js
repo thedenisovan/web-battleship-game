@@ -14,21 +14,29 @@ export const flags = {
 const playBtn = document.querySelector('[data-play]');
 const shuffleBtn = document.querySelector('[data-random]');
 
-// Toggles between different game states
+// Toggles game from disabled to running
+// Sets computes ships at random placement
+// Attaches event delegation to enemy field;
 function toggleGameStatus() {
   if (flags.hasPlayerPlacedShips) {
     flags.isGameOn = true;
+    computer.randomPlacement();
     ui.toggleEnemyBoard(flags.isGameOn);
+    attachEventDelegation();
     playBtn.classList.toggle('hidden');
     shuffleBtn.classList.toggle('hidden');
   }
 }
 
-// Listens for user attack to take place, then calls render function
-function renderAttack() {
-  if (flags.isGameOn && flags.isPlayerMove) {
+// Removes event listener from enemy field after move
+// Makes computer attack at random pos after 1s and returns event listener
+function makeComputerMove() {
+  detachEventDelegation();
+  setTimeout(() => {
+    computer.computerAttack(player1);
+    ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
     attachEventDelegation();
-  }
+  }, 1000);
 }
 
 function randomizeShipsOnBoard(player) {
@@ -40,24 +48,15 @@ function randomizeShipsOnBoard(player) {
   }
 }
 
-shuffleBtn.addEventListener('click', () => {
-  randomizeShipsOnBoard(player1)
-});
-
-playBtn.addEventListener('click', () => {
-  toggleGameStatus();
-  renderAttack();
-  computer.randomPlacement();
-});
-
 function handleBattlefieldClick(event) {
   const target = event.target;
 
   if (target.classList.contains('cell')) {
     computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
     ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
-    flags.isPlayerMove = false;
   }
+  makeComputerMove();
+  flags.isPlayerMove = false;
 }
 
 function attachEventDelegation() {
@@ -69,5 +68,14 @@ function detachEventDelegation() {
   document.querySelector('[data-battlefield-right]')
     .removeEventListener('click', handleBattlefieldClick);
 }
+
+
+shuffleBtn.addEventListener('click', () => {
+  randomizeShipsOnBoard(player1)
+});
+
+playBtn.addEventListener('click', () => {
+  toggleGameStatus();
+});
 
 
