@@ -20,6 +20,7 @@ const shuffleBtn = document.querySelector('[data-random]');
 function toggleGameStatus() {
   if (flags.hasPlayerPlacedShips) {
     flags.isGameOn = true;
+    ui.changeDisplayText();
     computer.randomPlacement();
     ui.toggleEnemyBoard(flags.isGameOn);
     attachEventDelegation();
@@ -36,6 +37,7 @@ function makeComputerMove() {
     computer.computerAttack(player1);
     ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
     attachEventDelegation();
+    ui.changeDisplayText();
   }, 1000);
 }
 
@@ -54,9 +56,11 @@ function handleBattlefieldClick(event) {
   if (target.classList.contains('cell')) {
     computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
     ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
+    flags.isPlayerMove = false;
   }
+  ui.changeDisplayText();
   makeComputerMove();
-  flags.isPlayerMove = false;
+  flags.isPlayerMove = true;
 }
 
 function attachEventDelegation() {
@@ -77,5 +81,3 @@ shuffleBtn.addEventListener('click', () => {
 playBtn.addEventListener('click', () => {
   toggleGameStatus();
 });
-
-

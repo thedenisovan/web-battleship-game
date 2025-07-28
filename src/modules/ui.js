@@ -19,6 +19,7 @@ const MAX_BOARD_SIZE = 10;
       field.appendChild(cell);
     }
   });
+  changeDisplayText();
 })(MAX_BOARD_SIZE);
 
 export const PLAYER_BOARD_SELECTOR = document.querySelectorAll('[data-battlefield-left] .cell');
@@ -65,6 +66,16 @@ function resetBoardCells(field) {
   document.querySelectorAll(`${field} .cell`).forEach((cell) => {
     cell.style.background = 'none';
   });
+}
+
+export function changeDisplayText() {
+  if (!control.flags.isGameOn) {
+    display.textContent = 'Place ships and you are ready to begin sea battle.'
+  } else if (control.flags.isPlayerMove && control.flags.isGameOn) {
+    display.textContent = 'Your move skipper, attack now!'
+  } else if (!control.flags.isPlayerMove && control.flags.isGameOn) {
+    display.textContent = 'Hold your sea horses, it\'s enemy\'s turn now.'
+  }
 }
 
 toggleEnemyBoard(control.flags.isGameOn);

@@ -157,7 +157,7 @@ export class AiPlayer extends Player {
       x = this.randomIdx();
       y = this.randomIdx();
     }
-    player.gameBoard.receiveAttack(x, y);
+    return player.gameBoard.receiveAttack(x, y);
   }
 }
 
