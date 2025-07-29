@@ -33,20 +33,22 @@ function enableGame() {
 // Makes computer attack at random pos after 1s and returns resolved promise
 async function makeComputerMove() {
   detachEventDelegation();
-  ui.changeDisplayText();
+  let returnValue;
 
   if (flags.isGameOn && !flags.isPlayerMove) {
-    return new Promise((resolve) => {
-      setTimeout( () => {
-        let returnValue = computer.computerAttack(player1);
-        ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-        attachEventDelegation();
-        resolve(returnValue);
-        flags.isPlayerMove = true;
-        ui.changeDisplayText();
-      }, 700);
-    });
+    returnValue = computer.computerAttack(player1);
+    ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
+
+    // While computer makes correct attack's let him shoot again
+    while (returnValue !== 'Missed.' && returnValue !== null) {
+      returnValue = computer.computerAttack(player1);
+      ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
+    }
+    attachEventDelegation();
+    flags.isPlayerMove = true;
+    ui.changeDisplayText();
   }
+  return returnValue;
 }
 
 function randomizeShipsOnBoard(player) {
@@ -61,18 +63,20 @@ function randomizeShipsOnBoard(player) {
 function handleBattlefieldClick(event) {
   const target = event.target;
 
-  if (target.classList.contains('cell') && !target.classList.contains('disabled')) {
+  if (target.classList.contains('cell') && !target.classList.contains('disabled') && flags.isPlayerMove) {
 
     target.classList.add('disabled');
     result = computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
     ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
-    ui.changeDisplayText();
     checkGameOver();
     // If you hit a cell containing a ship you can repeat your move
     if (result === 'Hit' || result === 'You sunk a ship.') return;
     
     flags.isPlayerMove = false;
-    makeComputerMove();
+    ui.changeDisplayText();
+    setTimeout(() => {
+      makeComputerMove();
+    }, 900);
   }
 }
 
