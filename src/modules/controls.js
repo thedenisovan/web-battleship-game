@@ -13,6 +13,7 @@ export const flags = {
 
 const playBtn = document.querySelector('[data-play]');
 const shuffleBtn = document.querySelector('[data-random]');
+const resetBtn = document.querySelector('[data-reset]');
 
 // Toggles game from disabled to running
 // Sets computes ships at random placement
@@ -24,8 +25,8 @@ function enableGame() {
     computer.randomPlacement();
     ui.toggleEnemyBoard(flags.isGameOn);
     attachEventDelegation();
-    playBtn.classList.toggle('hidden');
-    shuffleBtn.classList.toggle('hidden');
+    playBtn.classList.add('hidden');
+    shuffleBtn.classList.add('hidden');
   }
 }
 
@@ -104,6 +105,23 @@ function disableGame() {
   detachEventDelegation();
   ui.changeDisplayText();
   ui.toggleEnemyBoard(flags.isGameOn);
+  resetBtn.classList.remove('hidden');
+}
+
+function restartGame() {
+  player1.gameBoard.resetBoard();
+  player1.gameBoard.lives = 17;
+  computer.gameBoard.resetBoard();
+  computer.gameBoard.lives = 17;
+
+  ui.resetBoardCells('[data-battlefield-right]');
+  ui.resetBoardCells('[data-battlefield-left]');
+
+  playBtn.classList.remove('hidden');
+  shuffleBtn.classList.remove('hidden');
+  resetBtn.classList.add('hidden');
+
+  flags.isPlayerMove = true;
 }
 
 shuffleBtn.addEventListener('click', () => {
@@ -113,3 +131,7 @@ shuffleBtn.addEventListener('click', () => {
 playBtn.addEventListener('click', () => {
   enableGame();
 });
+
+resetBtn.addEventListener('click', () => {
+  restartGame();
+})

@@ -62,7 +62,7 @@ export function toggleEnemyBoard(flag) {
 }
 
 // Resets looks of board
-function resetBoardCells(field) {
+export function resetBoardCells(field) {
   document.querySelectorAll(`${field} .cell`).forEach((cell) => {
     cell.style.background = 'none';
   });
