@@ -1,4 +1,4 @@
-import { Player, AiPlayer } from './classes.js';
+import { Player, AiPlayer, delay } from './classes.js';
 import * as ui from './ui.js';
 
 export let player1 = new Player();
@@ -37,16 +37,9 @@ async function makeComputerMove() {
   let returnValue;
 
   if (flags.isGameOn && !flags.isPlayerMove) {
-    returnValue = computer.computerAttack(player1);
-    ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-
-    // While computer makes correct attack's let him shoot again
-    while (returnValue !== 'Missed.' && returnValue !== null) {
-      returnValue = computer.computerAttack(player1);
-      ui.renderFieldAfterAttack('[data-battlefield-left]', player1);
-    }
+    returnValue = await computer.computerAttack(player1);
+    
     attachEventDelegation();
-    flags.isPlayerMove = true;
     ui.changeDisplayText();
   }
   return returnValue;
@@ -64,6 +57,7 @@ function randomizeShipsOnBoard(player) {
 function handleBattlefieldClick(event) {
   const target = event.target;
   result = null;
+  flags.isPlayerMove = true;
 
   if (target.classList.contains('cell') && !target.classList.contains('disabled') && flags.isPlayerMove) {
 
@@ -79,7 +73,7 @@ function handleBattlefieldClick(event) {
     ui.changeDisplayText();
     setTimeout(() => {
       makeComputerMove();
-    }, 900);
+    }, 400);
   }
 }
 

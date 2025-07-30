@@ -1,3 +1,6 @@
+import * as ui from './ui.js';
+import * as control from './controls.js';
+
 // ===SHIP CLASS===
 export class Ship {
   #hits = 0;
@@ -121,16 +124,16 @@ export class Player {
   constructor() {
     this.gameBoard = new GameBoard();
   }
-  randomIdx() {
-    return Math.floor(Math.random() * 10);
+  randomIdx(num) {
+    return Math.floor(Math.random() * num);
   }
   direction() {
-    return this.randomIdx() > 5;
+    return this.randomIdx(10) > 5;
   }
   // Places ships at random position
   randomPlacement() {
-    let x = this.randomIdx();
-    let y = this.randomIdx();
+    let x = this.randomIdx(10);
+    let y = this.randomIdx(10);
     const ships = [5, 4, 3, 3, 2];
 
     while (ships.length > 0) {
@@ -140,8 +143,8 @@ export class Player {
       while (
         this.gameBoard.placeShip(currentShip, [x, y], this.direction()) === null
       ) {
-        x = this.randomIdx();
-        y = this.randomIdx();
+        x = this.randomIdx(10);
+        y = this.randomIdx(10);
       }
     }
   }
@@ -152,16 +155,55 @@ export class AiPlayer extends Player {
     super();
   }
   // Generates computer attack
-  computerAttack(player) {
-    let x = this.randomIdx();
-    let y = this.randomIdx();
-    let board = player.gameBoard.board;
+  async computerAttack(player) {
+    const moves = [
+      [0,1],
+      [1,0],
+      [0,-1],
+      [-1,0]
+    ]
+
+    let x = this.randomIdx(10);
+    let y = this.randomIdx(10);
+    const board = player.gameBoard.board;
 
     while (board[x][y] === 'o' || board[x][y] === 'x') {
-      x = this.randomIdx();
-      y = this.randomIdx();
+      x = this.randomIdx(10);
+      y = this.randomIdx(10);
     }
-    return player.gameBoard.receiveAttack(x, y);
+    player.gameBoard.receiveAttack(x, y);
+    ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+
+    // If player did hit enemy ship, make more moves until he misses
+    while (board[x][y] === 'x') {
+      await delay(400);
+      let queue = [];
+
+      // If hit next move must be close to previous
+      for (let [moveX, moveY] of moves) {
+        let newX = x + moveX;
+        let newY = y + moveY;
+
+        if (
+          (newX >= 0 && newY >= 0 && newX < 10 && newY < 10) &&
+          (board[newX][newY] !== 'x' && board[newX][newY] !== 'o')
+        ) {
+          queue.push([newX, newY]);
+        }
+      }
+
+      let num = queue.length;
+      let randomMove = this.randomIdx(num - 1);
+
+      x = queue[randomMove][0];
+      y = queue[randomMove][1];
+      player.gameBoard.receiveAttack(x, y);
+      ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+      control.flags.isPlayerMove = false;
+    }
   }
 }
 
+export function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
