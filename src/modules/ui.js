@@ -59,6 +59,7 @@ export function toggleEnemyBoard(flag) {
   } else {
     ENEMY_BOARD_SELECTOR.forEach((cell) => cell.classList.add('disabled'));
   }
+  toggleFocusState();
 }
 
 // Resets looks of board
@@ -91,9 +92,6 @@ export function changeDisplayText() {
   }
 }
 
-toggleEnemyBoard(control.flags.isGameOn);
-
-
 // Creates squared blocks representing a player ships on side of the field
 function renderPlayerShips() {
   document.querySelectorAll('[data-ship]').forEach((ship) => {
@@ -105,4 +103,19 @@ function renderPlayerShips() {
   });
 }
 
-document.querySelector('data-monitor');
+// If game is on on on hover enemy board cell must be color red
+export function toggleFocusState() {
+  if (!control.flags.isGameOn) {
+    document.querySelectorAll('.disabled')
+  .forEach((cell) => {
+    cell.addEventListener('mouseover', () => {
+      cell.classList.add('focused');
+    });
+    cell.addEventListener('mouseout', () => {
+      cell.classList.remove('focused');
+    });
+  });
+  }
+}
+
+toggleEnemyBoard(control.flags.isGameOn);

@@ -62,9 +62,13 @@ body .right-bar {
   border: var(--border);
   cursor: pointer;
 }
+.focused {
+  border: 2px solid red;
+  background-color: rgba(226, 17, 17, 0.466);
+}
 .disabled {
   background-color: rgba(128, 128, 128, 0.6);
-  border: 1px solid gray;
+  border: var(--border)
 }
 .disabled:hover {
   cursor: not-allowed;
