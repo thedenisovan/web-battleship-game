@@ -69,14 +69,21 @@ function resetBoardCells(field) {
 }
 
 export function changeDisplayText() {
+  const playerMove = control.flags.isPlayerMove;
+  const isGameOn = control.flags.isGameOn;
+  const result = control.result;
+  
   switch(true) {
-    case control.flags.isPlayerMove && control.flags.isGameOn:
+    case playerMove && isGameOn && result !== 'You sunk a ship.':
       display.textContent = `Your move skipper!`
       break;
-    case !control.flags.isPlayerMove && control.flags.isGameOn:
+    case result === 'You sunk a ship.':
+      display.textContent = result;
+      break;
+    case !playerMove && isGameOn:
       display.textContent = `Hold your horses Captain, Its computers move!`
       break;
-    case control.flags.hasPlayerPlacedShips && !control.flags.isGameOn:
+    case control.flags.hasPlayerPlacedShips && !isGameOn:
       display.textContent = control.player1.gameBoard.lives > control.computer.gameBoard.lives ? 'Game over! You won!' : 'Game over! You lost!';
       break;
     default:

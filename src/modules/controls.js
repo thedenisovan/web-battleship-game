@@ -62,11 +62,13 @@ function randomizeShipsOnBoard(player) {
 
 function handleBattlefieldClick(event) {
   const target = event.target;
+  result = null;
 
   if (target.classList.contains('cell') && !target.classList.contains('disabled') && flags.isPlayerMove) {
 
     target.classList.add('disabled');
     result = computer.gameBoard.receiveAttack(target.id[0], target.id[1]);
+    ui.changeDisplayText();
     ui.renderFieldAfterAttack('[data-battlefield-right]', computer);
     checkGameOver();
     // If you hit a cell containing a ship you can repeat your move
