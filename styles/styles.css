@@ -1,6 +1,6 @@
 :root {
   --bar-width: 150px;
-  --field-size: 600px;
+  --small-field-size: 25vw;
   --border: 1px solid rgb(111, 111, 111);
 }
 
@@ -49,8 +49,8 @@ body .right-bar {
   display: flex;
   margin: auto;
   flex-wrap: wrap;
-  width: var(--field-size);
-  height: var(--field-size);
+  width: var(--small-field-size);
+  height: var(--small-field-size);
 }
 .right-bar main #battlefield-left {
   grid-area: left-field;
@@ -70,7 +70,7 @@ body .right-bar {
   cursor: not-allowed;
 }
 .right-bar main .interactions {
-  height: var(--field-size);
+  height: var(--small-field-size);
   margin: auto;
   min-width: var(--bar-width);
   grid-area: nav;
