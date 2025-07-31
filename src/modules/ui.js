@@ -124,5 +124,16 @@ export function hideSideBar() {
   }
 }
 
+PLAYER_BOARD_SELECTOR.forEach((cell) => {
+  cell.addEventListener('mouseover', () => {
+    cell.classList.add('selected');
+  });
+});
+PLAYER_BOARD_SELECTOR.forEach((cell) => {
+  cell.addEventListener('mouseleave', () => {
+    cell.classList.remove('selected');
+  });
+});
+
 toggleEnemyBoard(control.flags.isGameOn);
 renderPlayerShips();

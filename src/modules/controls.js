@@ -8,6 +8,7 @@ export let result = null;
 let currentSelectedShipLength = null;
 const enemyBoard = '[data-battlefield-right]';
 const playerBoard = '[data-battlefield-left]';
+let availableShips = 5;
 
 export const flags = {
   isGameOn: false,
@@ -110,9 +111,9 @@ function disableGame() {
 
 function restartGame() {
   player1.gameBoard.resetBoard();
-  player1.gameBoard.lives = 15;
+  player1.gameBoard.lives = 16;
   computer.gameBoard.resetBoard();
-  computer.gameBoard.lives = 15;
+  computer.gameBoard.lives = 16;
 
   ui.resetBoardCells(enemyBoard);
   ui.resetBoardCells(playerBoard);
@@ -153,13 +154,22 @@ document.addEventListener('click', (event) => {
 // Places selected ship on player board
 attachEventDelegation(playerBoard, (event) => {
   if (flags.isPlayerSelectingField) {
-    player1.gameBoard.placeShip(currentSelectedShipLength, [+event.target.id[0], +event.target.id[1]], false);
+    if (
+      player1.gameBoard.placeShip(currentSelectedShipLength, [+event.target.id[0], +event.target.id[1]], false) === null
+    ) {
+      return null;
+    }
     ui.renderShipsOnBoard();
     document.getElementById(`${currentSelectedShipLength}`).style.display = 'none';
 
     currentSelectedShipLength = null;
     flags.isPlayerSelectingField = false;
     ship.forEach((s) => s.classList.remove('selected'));
+
+    availableShips--;
+    if (availableShips === 0) {
+      document.querySelector('.left-bar').classList.add('hidden');
+    }
   }
 });
 
@@ -173,6 +183,13 @@ ship.forEach((one) => {
     one.classList.add('selected');
   });
 });
+
+document.querySelectorAll('[data-battlefield-left] .cell')
+  .forEach((cell) => {
+    if (flags.isPlayerSelectingField) {
+      cell.classList.add('selected')
+    }
+  })
 
 shuffleBtn.addEventListener('click', () => {
   randomizeShipsOnBoard(player1);

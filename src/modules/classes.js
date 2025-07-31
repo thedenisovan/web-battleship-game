@@ -34,7 +34,7 @@ export class GameBoard {
   #ships = [];
   constructor() {
     this.board = this.#generateBoard();
-    this.lives = 15;
+    this.lives = 16;
   }
   // Creates 2d game board, each empty position is set to null
   #generateBoard() {
@@ -74,8 +74,8 @@ export class GameBoard {
 
     if (length > 5 || length < 1) return true;
     else if (
-      (vertical && row + length > this.#MAX_INDEX) ||
-      (!vertical && col + length > this.#MAX_INDEX) ||
+      (vertical && row + length > this.#MAX_INDEX + 1) ||
+      (!vertical && col + length > this.#MAX_INDEX + 1) ||
       row < 0 ||
       col < 0
     ) {
