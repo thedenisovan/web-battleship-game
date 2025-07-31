@@ -78,7 +78,7 @@ export function changeDisplayText() {
     case playerMove && isGameOn && result !== 'You sunk a ship.':
       display.textContent = `Your move skipper!`
       break;
-    case result === 'You sunk a ship.':
+    case result === 'You sunk a ship.' && isGameOn:
       display.textContent = result;
       break;
     case !playerMove && isGameOn:
@@ -118,4 +118,11 @@ export function toggleFocusState() {
   }
 }
 
+export function hideSideBar() {
+  if (control.flags.hasPlayerPlacedShips) {
+    document.querySelector('.left-bar').style.display = 'none';
+  }
+}
+
 toggleEnemyBoard(control.flags.isGameOn);
+renderPlayerShips();

@@ -9,20 +9,27 @@ body {
   height: 100vh;
 }
 body .left-bar {
-  flex: 0.15;
+  width: 20vw;
   min-width: var(--bar-width);
   border: var(--border);
 }
 body .left-bar .port .ship {
   display: flex;
 }
+body .left-bar .port .ship:hover {
+  cursor: pointer;
+  border: 2px solid red;
+}
+.selected {
+  border: 2px solid red;
+}
 body .left-bar .port .ship .square {
-  height: 50px;
-  width: 50px;
+  height: 2.5vw;
+  width: 2.5vw;
   border: var(--border);
 }
 body .right-bar {
-  flex: 0.85;
+  width: 100%;
   display: grid;
   grid-template-areas:
     'header header header header header'

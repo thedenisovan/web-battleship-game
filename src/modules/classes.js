@@ -34,7 +34,7 @@ export class GameBoard {
   #ships = [];
   constructor() {
     this.board = this.#generateBoard();
-    this.lives = 17;
+    this.lives = 15;
   }
   // Creates 2d game board, each empty position is set to null
   #generateBoard() {
@@ -72,7 +72,7 @@ export class GameBoard {
     let [row, col] = start;
     let direction = vertical ? row : col;
 
-    if (length > 5 || length < 2) return true;
+    if (length > 5 || length < 1) return true;
     else if (
       (vertical && row + length > this.#MAX_INDEX) ||
       (!vertical && col + length > this.#MAX_INDEX) ||
@@ -134,7 +134,7 @@ export class Player {
   randomPlacement() {
     let x = this.randomIdx(10);
     let y = this.randomIdx(10);
-    const ships = [5, 4, 3, 3, 2];
+    const ships = [5, 4, 3, 2, 1];
 
     while (ships.length > 0) {
       let currentShip = ships.shift();
@@ -156,6 +156,7 @@ export class AiPlayer extends Player {
   }
   // Generates computer attack
   async computerAttack(player) {
+    let returnValue;
     const moves = [
       [0,1],
       [1,0],
@@ -171,12 +172,12 @@ export class AiPlayer extends Player {
       x = this.randomIdx(10);
       y = this.randomIdx(10);
     }
-    player.gameBoard.receiveAttack(x, y);
+    returnValue = player.gameBoard.receiveAttack(x, y);
     ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
 
     // If player did hit enemy ship, make more moves until he misses
     while (board[x][y] === 'x') {
-      await delay(400);
+      await delay(500);
       let queue = [];
 
       // If hit next move must be close to previous
@@ -191,16 +192,20 @@ export class AiPlayer extends Player {
           queue.push([newX, newY]);
         }
       }
+      // If no legal moves call function recursive way to make one more move after hit
+      if (queue.length < 1) {
+        return await this.computerAttack(player);
+      } else {
+        let length = queue.length;
+        let randomMove = this.randomIdx(length - 1);
 
-      let num = queue.length;
-      let randomMove = this.randomIdx(num - 1);
-
-      x = queue[randomMove][0];
-      y = queue[randomMove][1];
-      player.gameBoard.receiveAttack(x, y);
-      ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
-      control.flags.isPlayerMove = false;
+        x = queue[randomMove][0];
+        y = queue[randomMove][1];
+        player.gameBoard.receiveAttack(x, y);
+        returnValue = ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+      }
     }
+    return returnValue;
   }
 }
 
