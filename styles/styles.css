@@ -13,8 +13,15 @@ body .left-bar {
   min-width: var(--bar-width);
   border: var(--border);
 }
+.port {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
 body .left-bar .port .ship {
   display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 body .left-bar .port .ship:hover {
   cursor: pointer;
@@ -63,6 +70,9 @@ body .right-bar {
 .right-bar main #battlefield-left {
   grid-area: left-field;
 }
+.right-bar main #battlefield-left .cell:hover {
+  background-color: red;
+}
 .right-bar main #battlefield-right {
   grid-area: right-field;
 }
@@ -92,10 +102,10 @@ body .right-bar {
   gap: 1rem;
 }
 .interactions #display {
-  border-top: 5px solid rgb(9, 80, 9);
-  border-right: 5px solid rgb(34, 196, 34);
-  border-bottom: 5px solid rgb(9, 80, 9);
-  border-left: 5px solid rgb(34, 196, 34);
+  border-top: 5px solid black;
+  border-right: 5px solid gray;
+  border-bottom: 5px solid black;
+  border-left: 5px solid gray;
   text-align: center;
   min-width: 400px;
 }

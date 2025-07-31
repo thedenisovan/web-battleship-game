@@ -34,7 +34,7 @@ export class GameBoard {
   #ships = [];
   constructor() {
     this.board = this.#generateBoard();
-    this.lives = 16;
+    this.lives = 15;
   }
   // Creates 2d game board, each empty position is set to null
   #generateBoard() {

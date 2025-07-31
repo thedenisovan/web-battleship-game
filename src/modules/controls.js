@@ -115,9 +115,9 @@ function disableGame() {
 
 function restartGame() {
   player1.gameBoard.resetBoard();
-  player1.gameBoard.lives = 16;
+  player1.gameBoard.lives = 15;
   computer.gameBoard.resetBoard();
-  computer.gameBoard.lives = 16;
+  computer.gameBoard.lives = 15;
 
   ui.resetBoardCells(enemyBoard);
   ui.resetBoardCells(playerBoard);
@@ -185,22 +185,19 @@ attachEventDelegation(playerBoard, (event) => {
   }
 });
 
-// Adds style to focused or clicked ship
+// Adds style on clicked ship
 ship.forEach((one) => {
-  const length = Number(one.id);
-  one.style.width = `${2.5 * length}vw`;
-
   one.addEventListener('click', () => {
     ship.forEach((s) => s.classList.remove('selected'));
     one.classList.add('selected');
   });
 });
 
-document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
-  if (flags.isPlayerSelectingField) {
-    cell.classList.add('selected');
-  }
-});
+// document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
+//   if (flags.isPlayerSelectingField) {
+//     cell.classList.add('selected');
+//   }
+// });
 
 shuffleBtn.addEventListener('click', () => {
   randomizeShipsOnBoard(player1);
@@ -215,10 +212,22 @@ resetBtn.addEventListener('click', () => {
 });
 
 axisBtn.addEventListener('click', () => {
+  const port = document.querySelector('.port');
   flags.isVertical = !flags.isVertical;
-  flags.isVertical
-    ? (axisBtn.textContent = 'VERTICAL')
-    : (axisBtn.textContent = 'HORIZONTAL');
+
+  if (flags.isVertical) {
+    (axisBtn.textContent = 'VERTICAL');
+
+    port.style.display = 'flex';
+    port.style.flexDirection = 'row';
+    ship.forEach((s) => s.style.flexDirection = 'column');
+  } else {
+    (axisBtn.textContent = 'HORIZONTAL');
+
+    port.style.display = 'flex';
+    port.style.flexDirection = 'column';
+    ship.forEach((s) => s.style.flexDirection = 'row');
+  }
 });
 
 shipEventDelegation();
