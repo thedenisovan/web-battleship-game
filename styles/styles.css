@@ -76,7 +76,7 @@ body .right-bar {
 }
 .disabled {
   background-color: rgba(128, 128, 128, 0.6);
-  border: var(--border)
+  border: var(--border);
 }
 .disabled:hover {
   cursor: not-allowed;

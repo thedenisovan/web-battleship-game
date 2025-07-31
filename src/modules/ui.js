@@ -22,8 +22,12 @@ const MAX_BOARD_SIZE = 10;
   changeDisplayText();
 })(MAX_BOARD_SIZE);
 
-export const PLAYER_BOARD_SELECTOR = document.querySelectorAll('[data-battlefield-left] .cell');
-export const ENEMY_BOARD_SELECTOR = document.querySelectorAll('[data-battlefield-right] .cell');
+export const PLAYER_BOARD_SELECTOR = document.querySelectorAll(
+  '[data-battlefield-left] .cell'
+);
+export const ENEMY_BOARD_SELECTOR = document.querySelectorAll(
+  '[data-battlefield-right] .cell'
+);
 
 // Render display after each attack
 export function renderFieldAfterAttack(field, player) {
@@ -73,22 +77,26 @@ export function changeDisplayText() {
   const playerMove = control.flags.isPlayerMove;
   const isGameOn = control.flags.isGameOn;
   const result = control.result;
-  
-  switch(true) {
+
+  switch (true) {
     case playerMove && isGameOn && result !== 'You sunk a ship.':
-      display.textContent = `Your move skipper!`
+      display.textContent = `Your move skipper!`;
       break;
     case result === 'You sunk a ship.' && isGameOn:
       display.textContent = result;
       break;
     case !playerMove && isGameOn:
-      display.textContent = `Hold your horses Captain, Its computers move!`
+      display.textContent = `Hold your horses Captain, Its computers move!`;
       break;
     case control.flags.hasPlayerPlacedShips && !isGameOn:
-      display.textContent = control.player1.gameBoard.lives > control.computer.gameBoard.lives ? 'Game over! You won!' : 'Game over! You lost!';
+      display.textContent =
+        control.player1.gameBoard.lives > control.computer.gameBoard.lives
+          ? 'Game over! You won!'
+          : 'Game over! You lost!';
       break;
     default:
-      display.textContent = 'Place ships and you will be ready to begin sea battle.';
+      display.textContent =
+        'Place ships and you will be ready to begin sea battle.';
   }
 }
 
@@ -106,15 +114,14 @@ function renderPlayerShips() {
 // If game is on on on hover enemy board cell must be color red
 export function toggleFocusState() {
   if (!control.flags.isGameOn) {
-    document.querySelectorAll('.disabled')
-  .forEach((cell) => {
-    cell.addEventListener('mouseover', () => {
-      cell.classList.add('focused');
+    document.querySelectorAll('.disabled').forEach((cell) => {
+      cell.addEventListener('mouseover', () => {
+        cell.classList.add('focused');
+      });
+      cell.addEventListener('mouseout', () => {
+        cell.classList.remove('focused');
+      });
     });
-    cell.addEventListener('mouseout', () => {
-      cell.classList.remove('focused');
-    });
-  });
   }
 }
 

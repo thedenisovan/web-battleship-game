@@ -158,11 +158,11 @@ export class AiPlayer extends Player {
   async computerAttack(player) {
     let returnValue;
     const moves = [
-      [0,1],
-      [1,0],
-      [0,-1],
-      [-1,0]
-    ]
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0],
+    ];
 
     let x = this.randomIdx(10);
     let y = this.randomIdx(10);
@@ -186,8 +186,12 @@ export class AiPlayer extends Player {
         let newY = y + moveY;
 
         if (
-          (newX >= 0 && newY >= 0 && newX < 10 && newY < 10) &&
-          (board[newX][newY] !== 'x' && board[newX][newY] !== 'o')
+          newX >= 0 &&
+          newY >= 0 &&
+          newX < 10 &&
+          newY < 10 &&
+          board[newX][newY] !== 'x' &&
+          board[newX][newY] !== 'o'
         ) {
           queue.push([newX, newY]);
         }
@@ -202,7 +206,10 @@ export class AiPlayer extends Player {
         x = queue[randomMove][0];
         y = queue[randomMove][1];
         player.gameBoard.receiveAttack(x, y);
-        returnValue = ui.renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+        returnValue = ui.renderFieldAfterAttack(
+          '[data-battlefield-left]',
+          control.player1
+        );
       }
     }
     return returnValue;
@@ -210,5 +217,5 @@ export class AiPlayer extends Player {
 }
 
 export function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
