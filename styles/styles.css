@@ -25,11 +25,10 @@ body .left-bar .port .ship {
 }
 body .left-bar .port .ship:hover {
   cursor: pointer;
-  border: 2px solid red;
+  background-color: rgba(17, 17, 189, 0.61);
 }
 .selected {
-  border: 2px solid red;
-  background-color: rgba(255, 0, 0, 0.433);
+  background-color: rgba(17, 17, 189, 0.61);
 }
 body .left-bar .port .ship .square {
   height: 2.5vw;
@@ -71,7 +70,7 @@ body .right-bar {
   grid-area: left-field;
 }
 .right-bar main #battlefield-left .cell:hover {
-  background-color: red;
+  background-color: rgba(17, 17, 189, 0.61);
 }
 .right-bar main #battlefield-right {
   grid-area: right-field;
@@ -81,8 +80,7 @@ body .right-bar {
   cursor: pointer;
 }
 .focused {
-  border: 2px solid red;
-  background-color: rgba(226, 17, 17, 0.466);
+  background-color: rgba(160, 33, 33, 0.607);
 }
 .disabled {
   background-color: rgba(128, 128, 128, 0.6);
@@ -111,4 +109,8 @@ body .right-bar {
 }
 .hidden {
   display: none;
+}
+
+button {
+  cursor: pointer;
 }

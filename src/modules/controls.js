@@ -3,7 +3,6 @@ import * as ui from './ui.js';
 
 export let player1 = new Player();
 export let computer = new AiPlayer();
-
 export let result = null;
 let currentSelectedShipLength = null;
 const enemyBoard = '[data-battlefield-right]';
@@ -61,7 +60,7 @@ function randomizeShipsOnBoard(player) {
     flags.hasPlayerPlacedShips = true;
     player.gameBoard.resetBoard();
     player.randomPlacement();
-    ui.renderShipsOnBoard();
+    ui.renderShipsOnBoard(true);
     ui.hideSideBar();
   }
 }
@@ -181,6 +180,7 @@ attachEventDelegation(playerBoard, (event) => {
     if (availableShips === 0) {
       document.querySelector('.left-bar').classList.add('hidden');
       flags.hasPlayerPlacedShips = true;
+      axisBtn.classList.add('hidden');
     }
   }
 });
@@ -193,14 +193,9 @@ ship.forEach((one) => {
   });
 });
 
-// document.querySelectorAll('[data-battlefield-left] .cell').forEach((cell) => {
-//   if (flags.isPlayerSelectingField) {
-//     cell.classList.add('selected');
-//   }
-// });
-
 shuffleBtn.addEventListener('click', () => {
   randomizeShipsOnBoard(player1);
+  axisBtn.classList.add('hidden');
 });
 
 playBtn.addEventListener('click', () => {

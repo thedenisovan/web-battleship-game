@@ -1,9 +1,9 @@
 import * as control from './controls.js';
 import { Ship } from './classes.js';
 
-const RED_HIT_COLOR = 'rgba(250, 4, 5, 0.7)';
-const GREEN_MISS_COLOR = 'rgba(5, 250, 5, 0.7)';
-const BLUE_SHIP_COLOR = 'rgba(4, 4, 250, 0.7)';
+const RED_HIT_COLOR = 'rgba(250, 4, 4, 0.41)';
+const GREEN_MISS_COLOR = 'rgba(31, 161, 31, 0.46)';
+const BLUE_SHIP_COLOR = 'rgba(17, 17, 189, 0.61)';
 const MAX_BOARD_SIZE = 10;
 
 (function createGrid(size) {
@@ -43,9 +43,11 @@ export function renderFieldAfterAttack(field, player) {
 }
 
 // Renders player ships placement on game board
-export function renderShipsOnBoard() {
-  resetBoardCells('[data-battlefield-left]');
-  renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+export function renderShipsOnBoard(bool) {
+  if (bool) {
+    resetBoardCells('[data-battlefield-left]');
+    renderFieldAfterAttack('[data-battlefield-left]', control.player1);
+  }
 
   PLAYER_BOARD_SELECTOR.forEach((cell) => {
     if (
@@ -69,7 +71,7 @@ export function toggleEnemyBoard(flag) {
 // Resets looks of board
 export function resetBoardCells(field) {
   document.querySelectorAll(`${field} .cell`).forEach((cell) => {
-    cell.style.background = 'none';
+    cell.style.backgroundColor = 'white';
   });
 }
 
