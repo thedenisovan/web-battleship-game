@@ -81,13 +81,13 @@ export function changeDisplayText() {
   const result = control.result;
 
   switch (true) {
-    case playerMove && isGameOn && result !== 'You sunk a ship.':
+    case playerMove && result !== 'You sunk a ship.':
       display.textContent = `Your move skipper!`;
       break;
     case result === 'You sunk a ship.' && isGameOn:
       display.textContent = result;
       break;
-    case !playerMove && isGameOn:
+    case result === 'Missed.':
       display.textContent = `Hold your horses Captain, Its computers move!`;
       break;
     case control.flags.hasPlayerPlacedShips && !isGameOn:

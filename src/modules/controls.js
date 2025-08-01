@@ -48,9 +48,9 @@ async function makeComputerMove() {
   if (flags.isGameOn && !flags.isPlayerMove) {
     returnValue = await computer.computerAttack(player1);
 
+    flags.isPlayerMove = true;
     ui.changeDisplayText();
     attachEventDelegation(enemyBoard, handleBattlefieldClick);
-    flags.isPlayerMove = true;
   }
   return returnValue;
 }
@@ -121,7 +121,6 @@ function restartGame() {
   ui.resetBoardCells(enemyBoard);
   ui.resetBoardCells(playerBoard);
 
-  axisBtn.classList.remove('hidden');
   playBtn.classList.remove('hidden');
   shuffleBtn.classList.remove('hidden');
   resetBtn.classList.add('hidden');
