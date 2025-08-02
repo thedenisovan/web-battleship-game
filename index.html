@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚢 Battleship</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <div class="left-bar">
+      <h1>Available ships</h1>
+      <div class="port">
+        <div data-ship class="ship" id="5"></div>
+        <div data-ship class="ship" id="4"></div>
+        <div data-ship class="ship" id="3"></div>
+        <div data-ship class="ship" id="2"></div>
+        <div data-ship class="ship" id="1"></div>
+      </div>
+    </div>
+    <div class="right-bar">
+      <header></header>
+      <main>
+        <div data-battlefield-left class="field" id="battlefield-left"></div>
+        <div data-middle class="interactions">
+          <div data-monitor id="display">Place ships to start the game</div>
+          <button data-random>RANDOMIZE</button>
+          <button data-play>PLAY</button>
+          <button data-reset class="hidden">PLAY AGAIN</button>
+          <button data-direction>VERTICAL</button>
+        </div>
+        <div data-battlefield-right class="field" id="battlefield-right"></div>
+      </main>
+      <footer></footer>
+    </div>
+  </body>
+</html>
