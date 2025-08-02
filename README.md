@@ -27,11 +27,6 @@ You can play the game directly in your browser.
 
 > _Still in development — but feel free to take a look and follow the progress!_
 
-## 📁 Project Status
-
-🚧 **Core features still in development**  
-🔨 **Actively working on functionality, logic, and UI**
-
 ---
 
 Made with ❤️ as part of [The Odin Project](https://www.theodinproject.com/) curriculum.
