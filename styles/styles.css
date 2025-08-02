@@ -2,6 +2,7 @@
   --bar-width: 150px;
   --small-field-size: 25vw;
   --border: 1px solid rgb(111, 111, 111);
+  --red: rgba(160, 33, 33, 0.607);
 }
 
 body {
@@ -12,6 +13,12 @@ body .left-bar {
   width: 20vw;
   min-width: var(--bar-width);
   border: var(--border);
+}
+h1 {
+  border-bottom: var(--border);
+  margin-bottom: 1vh;
+  padding: 4.8vh 0 .1vh 0;
+  text-align: center;
 }
 .port {
   display: flex;
@@ -49,7 +56,7 @@ body .right-bar {
   grid-area: header;
 }
 .right-bar main {
-  border: var(--border);
+  /* border: var(--border); */
   grid-area: main;
   display: grid;
   grid-template-areas: 'left-field left-field nav right-field right-field';
@@ -80,7 +87,7 @@ body .right-bar {
   cursor: pointer;
 }
 .focused {
-  background-color: rgba(160, 33, 33, 0.607);
+  background-color: var(--red);
 }
 .disabled {
   background-color: rgba(128, 128, 128, 0.6);
@@ -105,7 +112,9 @@ body .right-bar {
   border-bottom: 5px solid black;
   border-left: 5px solid gray;
   text-align: center;
-  min-width: 400px;
+  width: 27vw;
+  font-weight: bold;
+  font-size: 1.1vw;
 }
 .hidden {
   display: none;
@@ -113,4 +122,15 @@ body .right-bar {
 
 button {
   cursor: pointer;
+  width: 35%;
+  margin: 0 auto;
+  background-color: rgba(128, 128, 128, 0.887);
+  color: white;
+  border: 3px solid black;
+  border-radius:  50px;
+}
+
+button:active {
+  background-color: gray;
+  transform: translate(-1px, -1px);
 }
