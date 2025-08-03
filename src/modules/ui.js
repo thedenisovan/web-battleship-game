@@ -71,7 +71,7 @@ export function toggleEnemyBoard(flag) {
 // Resets looks of board
 export function resetBoardCells(field) {
   document.querySelectorAll(`${field} .cell`).forEach((cell) => {
-    cell.style.backgroundColor = 'white';
+    cell.style.backgroundColor = '#71d8f2';
   });
 }
 
