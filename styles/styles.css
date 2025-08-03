@@ -8,17 +8,20 @@
 body {
   display: flex;
   height: 100vh;
+  background-color: aliceblue;
 }
 body .left-bar {
   width: 20vw;
   min-width: var(--bar-width);
   border: var(--border);
+
 }
 h1 {
   border-bottom: var(--border);
   margin-bottom: 1vh;
   padding: 4.8vh 0 .1vh 0;
   text-align: center;
+  font-size: 2vw;
 }
 .port {
   display: flex;
@@ -32,9 +35,9 @@ body .left-bar .port .ship {
 }
 body .left-bar .port .ship:hover {
   cursor: pointer;
-  background-color: rgba(17, 17, 189, 0.61);
+  background-color: rgba(11, 11, 235, 0.758);
 }
-.selected {
+body .left-bar .port .ship {
   background-color: rgba(17, 17, 189, 0.61);
 }
 body .left-bar .port .ship .square {
@@ -51,6 +54,7 @@ body .right-bar {
     'main main main main main'
     'main main main main main'
     'footer footer footer footer footer';
+
 }
 .right-bar header {
   grid-area: header;
@@ -61,12 +65,16 @@ body .right-bar {
   display: grid;
   grid-template-areas: 'left-field left-field nav right-field right-field';
 }
+
+.cell {
+  background-color: white;
+}
 .right-bar footer {
   grid-area: footer;
 }
 .right-bar main .field {
-  /* background: url('../src/assets/background.jpg'); */
-  /* background-size: cover; */
+  /* background: url('../src/assets/background.jpg');
+  background-size: cover; */
   display: flex;
   margin: auto;
   flex-wrap: wrap;
@@ -124,13 +132,18 @@ button {
   cursor: pointer;
   width: 35%;
   margin: 0 auto;
-  background-color: rgba(128, 128, 128, 0.887);
+  background-color: rgba(17, 17, 189, 0.61);
   color: white;
-  border: 3px solid black;
+  border: 2px solid black;
   border-radius:  50px;
+  font-size: 1.2vw;
+  font-weight: bold;
 }
 
 button:active {
-  background-color: gray;
+  background-color: rgb(0, 0, 137);
   transform: translate(-1px, -1px);
+}
+button:hover {
+  background-color: rgba(17, 17, 189, 0.782);
 }
