@@ -67,7 +67,7 @@ body .right-bar {
 }
 
 .cell {
-  background-color: white;
+  background-color: #71d8f2;
 }
 .right-bar footer {
   grid-area: footer;
