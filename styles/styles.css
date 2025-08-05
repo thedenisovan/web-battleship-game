@@ -32,6 +32,7 @@ body .left-bar .port .ship {
   display: flex;
   flex-direction: column;
   margin: auto;
+  transition: background-color .25s;
 }
 body .left-bar .port .ship:hover {
   cursor: pointer;
@@ -39,6 +40,10 @@ body .left-bar .port .ship:hover {
 }
 body .left-bar .port .ship {
   background-color: rgba(17, 17, 189, 0.61);
+}
+.selected .square {
+  transition: background-color 1.25s;
+  background-color: rgba(11, 11, 235, 0.758);
 }
 body .left-bar .port .ship .square {
   height: 2.5vw;
@@ -85,6 +90,7 @@ body .right-bar {
   grid-area: left-field;
 }
 .right-bar main #battlefield-left .cell:hover {
+  transition: background-color .25s;
   background-color: rgba(17, 17, 189, 0.61);
 }
 .right-bar main #battlefield-right {
@@ -138,6 +144,9 @@ button {
   border-radius:  50px;
   font-size: 1.2vw;
   font-weight: bold;
+  transition: 
+  transform .25s,
+  background-color .25s;
 }
 
 button:active {
