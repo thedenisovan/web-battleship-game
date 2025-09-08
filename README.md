@@ -23,10 +23,6 @@ Basic game logic has been tested to ensure smooth functionality. More advanced t
 
 ## 🚀 Try It Out
 
-You can play the game directly in your browser.
-
-> _Still in development — but feel free to take a look and follow the progress!_
-
----
+You can play the game directly in your [browser](https://thedenisovan.github.io/web-battleship-game/).
 
 Made with ❤️ as part of [The Odin Project](https://www.theodinproject.com/) curriculum.
